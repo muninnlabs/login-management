@@ -34,3 +34,5 @@ build/
 
 ### Node.js ###
 node_modules/
+
+*.env
