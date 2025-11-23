@@ -22,6 +22,21 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    // In CommentService.java
+    public List<CommentDto> findAll() {
+        // Retrieve only top-level comments. JPA's fetch strategy will load the replies.
+        List<CommentEntity> topLevelComments = commentRepository.findByParentCommentIsNull();
+        // Map the top-level entities, which triggers the recursive mapping for replies
+        return topLevelComments.stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
+    public CommentDto findById(Long id) {
+        CommentEntity comment = commentRepository.findById(id).orElse(null);
+        return comment != null ? convertToDto(comment) : null;
+    }
+
     public List<CommentDto> findByTargetUserId(Long targetUserId) {
         List<CommentEntity> comments = commentRepository.findByTargetUserId(targetUserId);
         return comments.stream()
@@ -29,15 +44,34 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
+    public List<CommentDto> addNewComment(CommentEntity comment) {
+        commentRepository.save(comment);
+        return findByTargetUserId(comment.getTargetUser().getId());
+    }
+
     private CommentDto convertToDto(CommentEntity comment) {
-        return new CommentDto(
+        CommentDto dto = new CommentDto(
                 comment.getId(),
                 comment.getContent(),
                 comment.getCommenter().getName(),
                 comment.getCommenter().getEmail(),
                 comment.getTargetUser().getName(),
                 comment.getTargetUser().getEmail(),
-                comment.getCreatedAt()
+                comment.getCreatedAt(),
+                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
+                null // Replies can be populated if needed
         );
+
+        if(comment.getReplies() != null && !comment.getReplies().isEmpty()) {
+            List<CommentDto> replyDtos = comment.getReplies().stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+            dto.setReplies(replyDtos);
+        }
+
+        return dto;
+
     }
+
+
 }

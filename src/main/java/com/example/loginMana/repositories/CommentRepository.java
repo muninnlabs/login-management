@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     List<CommentEntity> findByTargetUserId(Long targetUserId);
-
+    // Find all comments where the parent_comment_id column is NULL
+    List<CommentEntity> findByParentCommentIsNull();
 }

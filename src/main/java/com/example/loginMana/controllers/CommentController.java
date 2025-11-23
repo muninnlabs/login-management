@@ -16,11 +16,16 @@ public class CommentController {
 
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public Object findAllComments() {
-        return commentService.findAllAsDto();
+        return commentService.findAll();
     }
 
     @GetMapping("/target-user/{targetUserId}")
     public List<CommentDto> findCommentsByTargetUser(@PathVariable Long targetUserId) {
         return commentService.findByTargetUserId(targetUserId);
+    }
+
+    @GetMapping("/{id}")
+    public CommentDto findById(@PathVariable Long id) {
+        return commentService.findById(id);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +18,9 @@ public class CommentDto {
     private String targetUserName;
     private String targetUserEmail;
     private LocalDateTime createdAt;
+
+    private Long parentCommentId;
+
+    private List<CommentDto> replies;
 
 }
