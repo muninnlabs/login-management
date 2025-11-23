@@ -1,4 +1,4 @@
-package com.example.loginMana.dto;
+package com.example.loginMana.entities.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
