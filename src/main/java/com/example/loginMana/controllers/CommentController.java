@@ -1,24 +1,21 @@
 package com.example.loginMana.controllers;
 
-import com.example.loginMana.dto.CommentDto;
+import com.example.loginMana.entities.dto.CommentDto;
 import com.example.loginMana.services.CommentService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
-@RequiredArgsConstructor
 public class CommentController {
 
-    private final CommentService commentService;
+    @Autowired
+    public CommentService commentService;
 
-    @GetMapping({"", "/"})
-    public List<CommentDto> findAllComments() {
+    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+    public Object findAllComments() {
         return commentService.findAllAsDto();
     }
 

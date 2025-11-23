@@ -1,6 +1,6 @@
 package com.example.loginMana.services;
 
-import com.example.loginMana.dto.CommentDto;
+import com.example.loginMana.entities.dto.CommentDto;
 import com.example.loginMana.entities.CommentEntity;
 import com.example.loginMana.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;
